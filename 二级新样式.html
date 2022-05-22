@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+ <head> 
+  <title>二级新样式</title> 
+  <meta charset="utf-8&quot;"> 
+  <meta name="referrer" content="never"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
+  <style type="text/css">
+		* {
+			moz-user-select: -moz-none;
+			-moz-user-select: none;
+			-o-user-select: none;
+			-khtml-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+
+		.box {
+			width: 100%;
+			height: 100%;
+			Left: 0px;
+		}
+
+		.bg_img {
+			overflow: hidden;
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			z-index: 1;
+			Left: 0px;
+			top: 0px;
+		}
+
+		.bg_maker {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			background: rgba(0, 0, 0, .3);
+			z-index: 2;
+		}
+
+		.bg_img img {
+			width: 120%;
+			height: 100%;
+			margin: -10%;
+			object-fit: cover;
+			filter: blur(25px);
+		}
+
+		#top_img {
+			overflow: hidden;
+			width: 120px;
+			height: 170px;
+			/* height: 600px; */
+			position: absolute;
+			border-radius: 8px;
+			z-index: 3;
+			Left: 12px;
+			top: 140px;
+		}
+
+		#top_img img {
+			width: 105%;
+			height: 105%;
+			margin: -2%;
+			object-fit: cover;
+		}
+
+		.text_box {
+			width: 100%;
+			height: 140px;
+			Left: 0px;
+			top: 210px;
+			background: rgba(255, 255, 255, 1.0);
+			border-radius: 10px 10px 0 0;
+			position: absolute;
+			overflow: hidden;
+			z-index: 2;
+		}
+
+		.line {
+			position: absolute;
+			Left: 12px;
+			right: 12px;
+			top: 137px;
+			height: 1px;
+			background: rgba(0, 0, 0, .1);
+			overflow: hidden;
+		}
+
+		#title {
+			position: absolute;
+			z-index: 3;
+			Left: 147px;
+			right: 12px;
+			top: 155px;
+			font-weight: 700;
+			font-size: 18px;
+			color: #ffffff;
+			text-shadow: rgba(0, 0, 0, .1) 2px 2px 6px;
+			overflow: hidden;
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 1;
+		}
+
+		#desc {
+			position: absolute;
+			top: 0px;
+			left: 135px;
+			font-size: 12px;
+			color: rgba(0, 0, 0, .5);
+			overflow: hidden;
+			padding: 0px 12px 0 12px;
+		}
+
+		#desc {
+			overflow: hidden;
+			display: -webkit-box;
+			/* 超出几行时省略号显示，此处是5行 */
+			-webkit-line-clamp: 6;
+			-webkit-box-orient: vertical;
+		}
+
+		/* 点击展开 */
+		.desc:hover #desc {
+			-webkit-line-clamp: inherit
+		}
+	</style> 
+ </head> 
+ <body> 
+  <div class="box"> 
+  </div> 
+  <script type="text/javascript">
+		var data = JSON.parse(fy_bridge_app.getVar("二级样式数据"));
+		//以下是数据模型
+		/*var data = {
+			PIC: 'https://pic.iqiyipic.com.aibaily.cn/img/upload/vod/20211205-1/3b99586c52bb6136c776bf789a91607c.jpg',
+			//图片切记不要带Referer
+			TITLE: '大文字显示的内容',
+			SEARCH: '要搜的片名',
+			TEXT: '我是片子简介我是片子简介我是片子简介<br>我是片子简介我是',
+			// TEXT里，自己用<br>换行
+		}*/
+		var box = document.querySelector('.box');
+		box.innerHTML = `
+			<div class="bg_img">
+			<div class="bg_maker"></div>
+				<img id="img1">
+			</div>
+			<p id="title" onclick="search()">${data.TITLE}</p>
+			<div class="text_box">
+				<div class="line"></div>
+				<div class="desc">
+					<p id="desc" onclick="">${data.TEXT}</p>
+				</div>
+			</div>
+			<div id="top_img" onclick="pic()">
+				<img id="img">
+			</div>
+			`;
+
+		function search() {
+			$$$("hiker://empty#noLoading#").x5LazyRule(name => "hiker://search?s=" + name, data.SEARCH);
+		}
+
+		function pic() {
+			fy_bridge_app.showPic(data.PIC || "https://z3.ax1x.com/2021/07/14/WeeRm9.jpg");
+		}
+		
+		/*function plug() {
+			let rule =
+				"js:var d=[];try{eval('var json_p =' + fetch('hiker://files/rules/DuanNian/MyParse.json'));eval(request(json_p.settings.cj))}catch(e){var jsUrl = fetch('hiker://files/cache/MyParseSet.json');if(jsUrl == '' || !fetch(JSON.parse(jsUrl).cj)){var jsFile = fetch(MY_URL.split('#')[1]);}else{var jsFile = fetch(JSON.parse(jsUrl).cj);}eval(jsFile)};setParse();setResult(d)";
+			fba.open(JSON.stringify({
+				title: "断插设置",
+				url: "hiker://empty#noHistory##noRecordHistory#",
+				findRule: rule,
+				extra: {
+					newWindow: true,
+					windowId: "断插设置"
+				}
+			}));
+		}*/
+		
+		// 图片loading
+		window.onload = () => {
+			var img = document.querySelector('#img');
+			var img1 = document.querySelector('#img1');
+			// 先加载loading
+			var load =
+				'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJhIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCINCnZpZXdCb3g9IjAgMCAxNzIgMjQxIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxNzIgMjQxOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KLnN0MHtmaWxsOiNGRkZGRkY7fQ0KLnN0MXtmaWxsOiNGRjQ0OEY7fQ0KLnN0MntmaWxsOiM1RUZGRkY7fQ0KLnN0M3tmaWxsOiM3MERBRkY7fQ0KLnN0NHtmaWxsOiM3NUJERkY7fQ0KLnN0NXtmaWxsOiM5NzY2RkY7fQ0KPC9zdHlsZT4NCjxyZWN0IGlkPSJiIiBjbGFzcz0ic3QwIiB3aWR0aD0iMTcyIiBoZWlnaHQ9IjI0MSIvPg0KPGNpcmNsZSBpZD0iX3gzNF9fMV8iIGNsYXNzPSJzdDEiIGN4PSI1MCIgY3k9IjkwIiByPSIzNCIvPg0KPGNpcmNsZSBpZD0iX3gzNF8iIGNsYXNzPSJzdDIiIGN4PSIxMzMiIGN5PSI5NCIgcj0iMjAiLz4NCjxjaXJjbGUgaWQ9Il94MzNfIiBjbGFzcz0ic3QzIiBjeD0iODkiIGN5PSIxMjYiIHI9IjEyIi8+DQo8ZWxsaXBzZSBpZD0iX3gzMV8iIHRyYW5zZm9ybT0ibWF0cml4KDcuMDg4OTA0ZS0wMiAtMC45OTc1IDAuOTk3NSA3LjA4ODkwNGUtMDIgLTEwOS43MTM3IDI1My43MjIyKSIgY2xhc3M9InN0NSIgY3g9IjgxIiBjeT0iMTg1LjgiIHJ4PSI0MSIgcnk9IjQxIi8+DQo8Zz4gCjxjaXJjbGUgaWQ9Il94MzJfIiBjbGFzcz0ic3Q0IiBjeD0iMTEzIiBjeT0iMzkiIHI9IjI1Ii8+CjxhbmltYXRlVHJhbnNmb3JtIGF0dHJpYnV0ZU5hbWU9InRyYW5zZm9ybSIgYmVnaW49IjBzIiBkdXI9IjdzIiB0eXBlPSJyb3RhdGUiIGZyb209IjEyMCAxMTMgMzkiIHRvPSIzNjAgMTYwIDE5MCIgcmVwZWF0Q291bnQ9ImluZGVmaW5pdGUiLz4KPC9nPg0KPC9zdmc+DQo=';
+			img.src = load;
+			img1.src = load;
+			var newImg = new Image();
+			//目标图片
+			newImg.src = data.PIC;
+			function getFileName (name) {
+      return name.substring(name.lastIndexOf('/')).slice(1)
+}
+var lx=getFileName (newImg.src)
+//fy_bridge_app.log(lx)
+			fy_bridge_app.saveImage(newImg.src,"hiker://files/cache/"+lx)
+			newImg.src="file:///storage/emulated/0/Android/data/com.example.hikerview/files/Documents/cache/"+lx;
+			newImg.onerror = () => { // 图片加载错误时的替换图片
+				newImg.src = load
+			}
+			newImg.onload = () => { // 图片加载成功后把地址给原来的img
+				img.src = newImg.src;
+				img1.src = newImg.src
+			}
+		}
+	</script>  
+ </body>
+</html>
